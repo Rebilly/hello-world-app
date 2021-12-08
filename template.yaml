@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  A Hello World application for Rebilly App Store
+
+Globals:
+  Function:
+    Timeout: 3
+    Environment:
+      Variables:
+        APPLICATION_ID: "hello-world"
+        COUPON_ID: "welcome-coupon"
+        SECRET_API_KEY:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'content-type'"
+      AllowOrigin: "'*'"
+      AllowCredentials: "'*'"
+
+Resources:
+  # Handler of the `application-enabled` event that triggers each time the application installed
+  ApplicationEnabledFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: application_enabled.handler
+      Runtime: python3.8
+      Events:
+        ApplicationEnabledEventHandler:
+          Type: Api
+          Properties:
+            # Configure Rebilly rules engine to trigger a webhook on `application-enabled` event to this path
+            Path: /application-enabled
+            Method: POST
+
+  # Handler of the `customer-created` event that triggers each time a customer created in an organization installed the application
+  CustomerCreatedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: customer_created.handler
+      Runtime: python3.8
+      Events:
+        CustomerCreatedEventHandler:
+          Type: Api
+          Properties:
+            Path: /customer-created
+            Method: POST
+
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
