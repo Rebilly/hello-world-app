@@ -1,42 +1,33 @@
-# Hello World Application 
+# Hello World Application
 
-This repository is an example of application submitted to Rebilly App Store.
-You can find this application in [Sandbox environment](https://app-sandbox.rebilly.com/).
+This repository is an example of Hello World application submitted to Rebilly App Store. You can find it
+in [Sandbox environment](https://app-sandbox.rebilly.com/).
 
-The application consists of two Lambda functions:
+## Structure of the application
 
-+ `application_enabled` to handle webhooks when a new app is enabled
-+ `customer_created` to handle webhook when a new customer is created
+The application is a Lambda function with two handlers:
 
-Keep in mind the app is just an example and doesn't have any input validation
-to not overload the code.
++ `application_enabled` to handle webhooks when app installed
++ `customer_created` to handle webhooks when new customers created in users accounts
 
-## Test locally and deploy
+## Configuration in Rebilly
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+* Follow instructions to submit you application
+  in [Rebilly App Store guide](https://www.rebilly.com/docs/content/concepts-and-features/app-store-grid).
+* Deploy this Lambda function to get invocation url.
+* Configure a bind in rules engine when an *Application instance enabled* event occurs to send a webhook to the
+  invocation url you got plus the `application_enabled` handler path. The webhook url must then look
+  like `https://your-api-name.execute-api.your-region.amazonaws.com/Prod/application-enabled`.
+* Configure the webhook body to include an identifier of organization where your app installed:
+    ```json
+    {"organizationId":  "{{organizationId}}"}
+    ```
 
-To use the SAM CLI, you need the following tools:
+When a user installs your application, the event occurs, and the webhook sends. Application receives the webhook and
+subscribes itself to receive webhooks when a new customer created. You can change this part to execute the logic you
+need.
 
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+## Develop and deploy
 
-### Deploy the lambda function
-
-To build and deploy your application for the first time, run the following in your shell:
-
-```bash
-sam build --use-container
-sam deploy --guided
-```
-
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
-
-### Use the SAM CLI to build and test locally
-
-Build your application with the `sam build --use-container` command.
-
-```bash
-hello-world-app$ sam build --use-container
-hello-world-app$ sam local start-api
-```
+Follow [AWS SAM Reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html)
+to develop, run and deploy your Lambda function.
