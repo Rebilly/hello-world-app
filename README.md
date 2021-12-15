@@ -1,33 +1,35 @@
 # Hello World Application
 
-This repository is an example of Hello World application submitted to Rebilly App Store. You can find it
-in [Sandbox environment](https://app-sandbox.rebilly.com/).
+This repository is an example Hello World application.
+It has already been submitted and is available in [App Store sandbox environment](https://app-sandbox.rebilly.com/app-store).
+This readme describes how to submit and configure your own version of this application.
 
-## Structure of the application
+## Structure
 
-The application is a Lambda function with two handlers:
+The application is an AWS Lambda function with two handlers:
 
-+ `application_enabled` to handle webhooks when app installed
-+ `customer_created` to handle webhooks when new customers created in users accounts
++ `application_enabled`: handles webhooks when the app is installed.
++ `customer_created`: handles webhooks when new customers are added to users accounts in Rebilly.
+
+When this app is installed, it provides discounts to new users.
 
 ## Configuration in Rebilly
 
-* Follow instructions to submit you application
-  in [Rebilly App Store guide](https://www.rebilly.com/docs/content/concepts-and-features/app-store-grid).
-* Deploy this Lambda function to get invocation url.
-* Configure a bind in rules engine when an *Application instance enabled* event occurs to send a webhook to the
-  invocation url you got plus the `application_enabled` handler path. The webhook url must then look
-  like `https://your-api-name.execute-api.your-region.amazonaws.com/Prod/application-enabled`.
-* Configure the webhook body to include an identifier of organization where your app installed:
+1. [Submit an app to the Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/tutorial/submit-a-rebilly-app.md).
+1. Deploy this Lambda function and receive an invocation URL.
+1. In Rebilly, in the left navigation bar, click **Automations**, then click **Rules engine**.
+1. Click **Core events**, and select the **Application instance enabled** event.
+1. Click **Ruleset**, go to **Binds** tab, then click **Add Bind**. 
+1. Complete all fields.
+1. In the **Actions** section, click **Add action**, and select **Trigger webhook**.
+1. Add your invocation URL. Ensure that the URL is in the following format: `https://your-api-name.execute-api.your-region.amazonaws.com/Prod/application-enabled`.
+1. Click **Body**, and include an organization identifier of user who installed your app, using the following format: 
     ```json
     {"organizationId":  "{{organizationId}}"}
     ```
 
-When a user installs your application, the event occurs, and the webhook sends. Application receives the webhook and
-subscribes itself to receive webhooks when a new customer created. You can change this part to execute the logic you
-need.
+For more information on developing Rebilly apps, see [Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/app-store-grid).
 
 ## Develop and deploy
 
-Follow [AWS SAM Reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html)
-to develop, run and deploy your Lambda function.
+To develop, run, and deploy your own Lambda function, follow the [AWS SAM Reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html).
