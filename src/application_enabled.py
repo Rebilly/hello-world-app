@@ -58,7 +58,7 @@ def _create_webhook_subscriber(token, organization_id, customer_created_handler_
     payload = {
         "method": "POST",
         "url": f"{customer_created_handler_url}?organizationId={organization_id}",
-        "credentialHash": credential_hash['hash'],
+        "credentialHash": credential_hash["hash"],
         "status": "active",
         "eventsFilter": ["customer-created"]
     }
