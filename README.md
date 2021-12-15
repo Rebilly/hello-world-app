@@ -2,7 +2,7 @@
 
 This repository is an example Hello World application.
 It has already been submitted and is available in [App Store sandbox environment](https://app-sandbox.rebilly.com/app-store).
-This readme describes how to submit and configure your own application.
+This readme describes how to submit and configure your own version of this application.
 
 ## Structure
 
