@@ -15,7 +15,7 @@ When this app is installed, it provides discounts to new users.
 
 ## Configuration in Rebilly
 
-1. [Submit an app to the Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/tutorial/submit-a-rebilly-app.md).
+1. [Submit an app to the Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/tutorial/submit-a-rebilly-app).
 1. Deploy this Lambda function and receive an invocation URL.
 1. In Rebilly, in the left navigation bar, click **Automations**, then click **Rules engine**.
 1. Click **Core events**, and select the **Application instance enabled** event.
@@ -28,7 +28,7 @@ When this app is installed, it provides discounts to new users.
     {"organizationId":  "{{organizationId}}"}
     ```
 
-For more information on developing Rebilly apps, see [Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/app-store-grid).
+For more information on developing Rebilly apps, see [Rebilly App Store](https://www.rebilly.com/docs/content/concepts-and-features/app-store).
 
 ## Develop and deploy
 
