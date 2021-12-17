@@ -10,7 +10,7 @@ Globals:
       Variables:
         APPLICATION_ID: "hello-world"
         COUPON_ID: "welcome-coupon"
-        SECRET_API_KEY:
+        SECRET_API_KEY: "your Rebilly secret key"
   Api:
     Cors:
       AllowMethods: "'GET,POST,OPTIONS'"
