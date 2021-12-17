@@ -9,8 +9,7 @@ import customer_created
 # Retrieve installed by an organization application instance details using your secret key
 def _get_application_instance(organization_id):
     url = f"/applications/{os.environ.get('APPLICATION_ID')}/instances/{organization_id}"
-
-    return api_client.get(url, secret_key=os.environ.get("SECRET_API_KEY")).json()
+    return api_client.get(url, secret_key=os.environ.get("SecretApiKey")).json()
 
 
 # Create default coupon to redeem when a new customer is created
@@ -53,7 +52,6 @@ def _create_webhook_subscriber(token, organization_id, customer_created_handler_
         }
     }
     credential_hash = api_client.post(url, payload, jwt=token).json()
-
     url = "/webhooks"
     payload = {
         "method": "POST",
@@ -70,15 +68,11 @@ def handler(event, context):
     # Parse webhook data
     webhook_data = json.loads(event["body"])
     organization_id = webhook_data["organizationId"].strip()
-
     # Retrieve application instance"s JWT token to perform API calls on behalf of an organization that installed the app
     application_instance = _get_application_instance(organization_id)
     jwt = application_instance["token"]
-
     # Subscribe for `customer-created` event
     _create_webhook_subscriber(jwt, organization_id, _get_customer_created_webhook_url(event))
-
     # Create coupon
     _create_coupon(jwt, application_instance["settings"]["welcomeAmount"])
-
     return {"statusCode": 204, "body": None}

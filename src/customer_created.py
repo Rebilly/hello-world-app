@@ -10,7 +10,7 @@ SELF_PATH = "/customer-created"
 # Retrieve installed by an organization application instance details using your secret key
 def _get_application_instance(organization_id):
     url = f"/applications/{os.environ.get('APPLICATION_ID')}/instances/{organization_id}"
-    return api_client.get(url, secret_key=os.environ.get("SECRET_API_KEY")).json()
+    return api_client.get(url, secret_key=os.environ.get("SecretApiKey")).json()
 
 
 def _redeem_coupon(token, customer_id, paid_by_time):
@@ -34,5 +34,4 @@ def handler(event, context):
     customer_id = json.loads(event["body"])["customerId"]
     paid_by_time = datetime.now() + timedelta(days=application_instance["settings"]["welcomeDays"])
     _redeem_coupon(application_instance["token"], customer_id, paid_by_time)
-
     return {"statusCode": 204, "body": None}

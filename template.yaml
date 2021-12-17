@@ -3,6 +3,13 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   A Hello World application for Rebilly App Store
 
+Parameters:
+  SecretApiKey:
+    Description: "Your Rebilly Secret Key"
+    Type: "String"
+    NoEcho: true
+    Default: ""
+
 Globals:
   Function:
     Timeout: 3
@@ -10,7 +17,6 @@ Globals:
       Variables:
         APPLICATION_ID: "hello-world"
         COUPON_ID: "welcome-coupon"
-        SECRET_API_KEY: "your Rebilly secret key"
   Api:
     Cors:
       AllowMethods: "'GET,POST,OPTIONS'"
@@ -33,6 +39,9 @@ Resources:
             # Configure Rebilly rules engine to trigger a webhook on `application-enabled` event to this path
             Path: /application-enabled
             Method: POST
+      Environment:
+        Variables:
+          SecretApiKey: !Ref SecretApiKey
 
   # Handler of the `customer-created` event that triggers each time a customer created in an organization installed the application
   CustomerCreatedFunction:
@@ -47,6 +56,9 @@ Resources:
           Properties:
             Path: /customer-created
             Method: POST
+      Environment:
+        Variables:
+          SecretApiKey: !Ref SecretApiKey
 
 Outputs:
   HelloWorldApi:
