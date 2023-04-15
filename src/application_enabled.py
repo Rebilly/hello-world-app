@@ -12,6 +12,12 @@ def _get_application_instance(organization_id):
     return api_client.get(url, secret_key=os.environ.get("SecretApiKey")).json()
 
 
+# Retrieve application instance configuration
+def _get_application_instance_configuration(token):
+    url = f"/application-instances/{os.environ.get('APPLICATION_ID')}/configuration"
+    return api_client.get(url, jwt=token).json()
+
+
 # Create default coupon to redeem when a new customer is created
 def _create_coupon(token, amount):
     url = f"/coupons/{os.environ.get('COUPON_ID')}"
@@ -38,7 +44,7 @@ def _create_coupon(token, amount):
 def _get_customer_created_webhook_url(event):
     request_context = event["requestContext"]
     return "https://" + request_context["domainName"] + \
-           str(request_context["path"]).replace(request_context["resourcePath"], customer_created.SELF_PATH)
+        str(request_context["path"]).replace(request_context["resourcePath"], customer_created.SELF_PATH)
 
 
 # Add webhook subscriber to receive webhooks when a new customer is created
@@ -74,5 +80,6 @@ def handler(event, context):
     # Subscribe for `customer-created` event
     _create_webhook_subscriber(jwt, organization_id, _get_customer_created_webhook_url(event))
     # Create coupon
-    _create_coupon(jwt, application_instance["settings"]["welcomeAmount"])
+    settings = _get_application_instance_configuration(jwt)['settings']
+    _create_coupon(jwt, settings["welcomeAmount"])
     return {"statusCode": 204, "body": None}
