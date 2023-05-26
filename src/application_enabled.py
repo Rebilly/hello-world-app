@@ -50,19 +50,19 @@ def _get_customer_created_webhook_url(event):
 # Add webhook subscriber to receive webhooks when a new customer is created
 def _create_webhook_subscriber(token, organization_id, customer_created_handler_url):
     host = urlparse(customer_created_handler_url).netloc
-    url = "/credential-hashes/webhooks"
+    url = "/service-credentials/webhook"
     payload = {
         "host": host,
         "auth": {
             "type": "none"  # Consider to use authentication for your real webhooks
         }
     }
-    credential_hash = api_client.post(url, payload, jwt=token).json()
+    service_credential = api_client.post(url, payload, jwt=token).json()
     url = "/webhooks"
     payload = {
         "method": "POST",
         "url": f"{customer_created_handler_url}?organizationId={organization_id}",
-        "credentialHash": credential_hash["hash"],
+        "credentialHash": service_credential["id"],
         "status": "active",
         "eventsFilter": ["customer-created"]
     }
