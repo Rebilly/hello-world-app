@@ -31,7 +31,7 @@ Resources:
     Properties:
       CodeUri: src
       Handler: application_enabled.handler
-      Runtime: python3.8
+      Runtime: python3.12
       Events:
         ApplicationEnabledEventHandler:
           Type: Api
@@ -49,7 +49,7 @@ Resources:
     Properties:
       CodeUri: src
       Handler: customer_created.handler
-      Runtime: python3.8
+      Runtime: python3.12
       Events:
         CustomerCreatedEventHandler:
           Type: Api
